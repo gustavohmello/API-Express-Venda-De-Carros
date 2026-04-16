@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import Car from "./Car.js";
+import User from "./User.js"
 
 dotenv.config();
 
@@ -84,7 +85,7 @@ app.get("/Car/mark/:mark", async (req, res) => {
     }
 })
 
-app.get("/Car/available/:available", async (req, res) => {
+app.get("/Car/available/a", async (req, res) => {
     try {
         const searchForAvailableCars = await Car.find({available: true});
         res.json({ searchForAvailableCars });
@@ -118,19 +119,19 @@ app.get("/Car/price/:min/:max", async (req, res) => {
 
 })
 
-app.get("/car/plate/:plate", async (req, res) => {
+app.get("/Car/plate/:plate", async (req, res) => {
     try {
-        const carplate = await Car.findOne({ plate: req.params.plate })
-        res.json({ carplate })
-    } catch (error) {
-        res.json({ error: error.message })
+        const carPlate = await Car.find({ plate: req.params.plate })
+        res.json({ carPlate })
+    } catch (ERROR) {
+        res.json({ ERROR: ERROR.message })
     }
 })
 
 app.get("/Car/available/count", async (req, res) => {
     try {
 
-        const carCount = await Car.countDocumentos({ available: true })
+        const carCount = await Car.countDocuments({ available: "true" })
         res.json(carCount);
     } catch (ERROR) {
         res.json({ ERROR: ERROR.mensage });
@@ -138,6 +139,124 @@ app.get("/Car/available/count", async (req, res) => {
     }
 
 })
+
+app.post("/user", async(req, res) => {
+    try {
+        const newUser = await User.create(req.body);
+        res.json(newUser);
+    } catch (ERROR) {
+        res.json({ ERROR: ERROR.mensage });
+
+    }
+
+})
+
+app.get("/User", async (req, res) => {
+    try {
+        const Users = await User.find();
+        res.json(Users);
+    } catch (ERROR) {
+        res.json({ ERROR: ERROR.mensage })
+    }
+
+})
+
+app.get("/User/:id", async (req, res) => {
+    try {
+        const Users = await User.findById(req.params.id);
+        res.json(Users)
+    } catch (ERROR) {
+        res.json({ ERRPR: ERROR.mensage })
+    }
+})
+
+app.put("/User/:id", async (req, res) => {
+    try {
+        const updateUser = await User.findByIdAndUpdate(
+            req.params.id,
+            req.body
+        );
+        res.json(updateUser);
+    } catch (ERROR) {
+        res.json({ ERROR: ERROR.mensage })
+    }
+})
+
+app.delete("/User/:id", async (req, res) => {
+    try {
+        const deletedUser = await User.findByIdAndDelete(req.params.id);
+        res.json(deletedUser);
+
+    } catch (ERROR) {
+        res.json({ ERROR: ERROR.mensage });
+    }
+
+})
+
+app.get("/user/Email/:Email", async (req, res) => {
+    try {
+        const Users = await User.find( {Email: req.params.Email} );
+        res.json(Users)
+    } catch (ERROR) {
+        res.json({ ERRPR: ERROR.mensage })
+    }
+})
+
+app.get("/User/count", async (req, res) => {
+    try {
+
+        const UserCount = await User.countDocuments({User} )
+        res.json(UserCount);
+    } catch (ERROR) {
+        res.json({ ERROR: ERROR.mensage });
+
+    }
+
+})
+
+app.patch("/User/:id/Name", async (req, res) => {
+    try {
+        const updateUserName = await Car.findByIdAndUpdate(
+            req.params.id,
+            { Name: req.body.Name },
+        )
+        res.json(updateUserName);
+    } catch (ERROR) {
+        res.json({ ERROR: ERROR.mensage });
+    }
+
+})
+
+app.get("/user/exists/Email", async (req, res) => {
+    try {
+        const Users = await User.findOne( {Email: req.params.Email} );
+        res.json( {exists: !!User} )
+    } catch (ERROR) {
+        res.json({ ERRPR: ERROR.mensage })
+    }
+})
+
+app.get("/User/search/:Name", async (req, res) => {
+    try {
+        const Users = await User.findOne( {Name: req.params.Name} );
+        res.json( {exists: !!Users} );
+    } catch (ERROR) {
+        res.json({ ERROR: ERROR.mensage })
+    }
+
+})
+
+app.delete("/User", async (req, res) => {
+    try {
+        const deletedUser = await User.findByDeleteMany(req.params.id);
+        res.json(deletedUser);
+
+    } catch (ERROR) {
+        res.json({ ERROR: ERROR.mensage });
+    }
+
+})
+
 
 
 
