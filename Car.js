@@ -6,11 +6,12 @@ const UserSchema = new mongoose.Schema(
         mark: String,
         year: Number,
         color: String,
-        available: String,
+        available: Boolean,
         price: Number,
+        plate: String,
 
     },
-    {colletion: "cars"}
+    {colletion: "Car"}
 );
 
 export default mongoose.model("Car", UserSchema);
