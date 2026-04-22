@@ -2,7 +2,10 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import Car from "./Car.js";
-import User from "./User.js"
+import User from "./User.js";
+import Sale from "./sales.js"
+
+
 
 dotenv.config();
 
@@ -257,8 +260,59 @@ app.delete("/User", async (req, res) => {
 
 })
 
+app.post("/Sale", async (req, res) => {
+    try {
+        const newSale = await Sale.create(req.body);
+        res.json(newSale);
+    } catch (ERROR) {
+        res.json({ ERROR: ERROR.mensage });
+
+    }
+})
+
+app.get("/Sale", async (req, res) => {
+    try {
+        const Sale= await Sale.findbyid();
+        res.json(Sale);
+    } catch (ERROR) {
+        res.json({ ERROR: ERROR.mensage })
+    }
+
+})
 
 
+app.get("/Sale/:id", async (req, res) => {
+    try {
+        const Sale= await Sale.find(req.params.id);
+        res.json(Sale);
+    } catch (ERROR) {
+        res.json({ ERROR: ERROR.mensage })
+    }
+
+})
+
+app.put("/Sale/:id", async (req, res) => {
+    try {
+        const updateSale = await Sale.findByIdAndUpdate(
+            req.params.id,
+            req.body
+        );
+        res.json(updateSale);
+    } catch (ERROR) {
+        res.json({ ERROR: ERROR.mensage })
+    }
+})
+
+app.delete("/Sale/:id", async (req, res) => {
+    try {
+        const deletedSale = await Sale.findByIdAndDelete(req.params.id);
+        res.json(deletedSale);
+
+    } catch (ERROR) {
+        res.json({ ERROR: ERROR.mensage });
+    }
+
+})
 
 
 
