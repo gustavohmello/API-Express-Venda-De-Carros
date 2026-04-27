@@ -314,6 +314,71 @@ app.delete("/Sale/:id", async (req, res) => {
 
 })
 
+app.get("/sale/user/:userID", async (req, res) => {
+    try {
+        const salesByUser = await Sale.find({ userID: req.params.userID })
+        res.json({ salesByUser })
+    } catch (error) {
+        res.json({ error: error.message })
+    }
+
+})
+
+app.get("/sale/car/:carID", async (req, res) => {
+    try {
+        const salesByCar = await Sale.find({ carID: req.params.carID })
+        res.json({ salesByCar })
+    } catch (error) {
+        res.json({ error: error.message })
+    }
+
+})
+
+app.patch("/sale/:id/status", async (req, res) => {
+    try {
+        const updatedStatus = await Sale.findByIdAndUpdate(
+            req.params.id,
+            { status: req.body.status },
+            { new: true }
+        )
+        res.json({ updatedStatus })
+    } catch (error) {
+        res.json({ error: error.message })
+    }
+})
+
+app.get("/sale/value/:min/:max", async (req, res) => {
+    try {
+        const salesByValue = await Sale.find({ price: { $gte: Number(req.params.min), $lte: Number(req.params.max) } })
+        res.json({ salesByValue })
+    } catch (error) {
+        res.json({ error: error.message })
+    }
+})
+
+app.get("/sale/date/:date", async (req, res) => {
+    try {
+        const salesByDate = await Sale.find({ date: req.params.date })
+        res.json({ salesByDate })
+    }
+    catch (error) {
+        res.json({ error: error.message })
+    }
+
+
+
+})
+
+app.get("/sale/count/countSales", async (req, res) => {
+    try {
+        const countSales = await Sale.countDocuments({ Sale })
+        res.json({ countSales })
+    } catch (error) {
+        res.json({ error: error.message })
+    }
+
+})
+
 
 
 app.listen(PORT, () =>
